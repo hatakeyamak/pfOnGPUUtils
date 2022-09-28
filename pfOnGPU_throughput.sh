@@ -23,8 +23,8 @@ Options:
   -d, --data            Use Run-3 data instead of MC                      [Default: ${USE_DATA}]
   -b, --benchmark-exe   Path to patatrack-scripts/benchmark executable    [Default: ${BENCHMARK_EXE}]
   -e, --events          Throughput estimates: number of events            [Default: ${BENCHMARK_EVENTS}]
-  -t, --threads         Throughput estimates: number of jobs              [Default: ${BENCHMARK_JOBS}]
-  -j, --jobs            Throughput estimates: number of threads per job   [Default: ${BENCHMARK_THREADS}]
+  -j, --jobs            Throughput estimates: number of jobs              [Default: ${BENCHMARK_JOBS}]
+  -t, --threads         Throughput estimates: number of threads per job   [Default: ${BENCHMARK_THREADS}]
 @EOF
 }
 
