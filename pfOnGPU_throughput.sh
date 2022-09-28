@@ -46,7 +46,7 @@ fi
 
 # exit if output directory already exists
 if [ -d "${OUTPUT_DIR}" ]; then
-  printf "%s\n" "ERROR: target output directory already exists: ${OUTPUT_DIR}"
+  printf "\n%s\n\n" "ERROR: target output directory already exists: ${OUTPUT_DIR}"
   exit 1
 fi
 
