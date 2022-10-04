@@ -4,7 +4,7 @@
 SHOW_HELP=false
 OUTPUT_DIR=tmp
 USE_DATA=0
-BENCHMARK_EXE="${CMSSW_BASE}"/../../patatrack-scripts/benchmark
+BENCHMARK_EXE=
 BENCHMARK_EVENTS=1000
 BENCHMARK_JOBS=8
 BENCHMARK_THREADS=8
@@ -34,6 +34,9 @@ while [[ $# -gt 0 ]]; do
     -o|--output-dir) OUTPUT_DIR=$2; shift; shift;;
     -d|--data) USE_DATA=1; shift;;
     -b|--benchmark-exe) BENCHMARK_EXE=$2; shift; shift;;
+    -e|--events) BENCHMARK_EVENTS=$2; shift; shift;;
+    -j|--jobs) BENCHMARK_JOBS=$2; shift; shift;;
+    -t|--threads) BENCHMARK_THREADS=$2; shift; shift;;
     *) shift;;
   esac
 done
@@ -154,8 +157,13 @@ edmConfigDump .tmp.py -o hcalOnGPU_pfhbheOnGPU_cfg.py
 # run throughput estimates if patatrack-scripts/benchmark is available
 if [ -f "${BENCHMARK_EXE}" ]; then
   for cfgname in hcalOnCPU_pfhbheOnCPU hcalOnGPU_pfhbheOnCPU hcalOnGPU_pfhbheOnGPU; do
+    echo "Events  : ${BENCHMARK_EVENTS}"  >  "${cfgname}"_benchmark.log
+    echo "Jobs    : ${BENCHMARK_JOBS}"    >> "${cfgname}"_benchmark.log
+    echo "Threads : ${BENCHMARK_THREADS}" >> "${cfgname}"_benchmark.log
+    echo "Streams : ${BENCHMARK_THREADS}" >> "${cfgname}"_benchmark.log
     ${BENCHMARK_EXE} "${cfgname}"_cfg.py  --log "${cfgname}"_logs \
-      -e "${BENCHMARK_EVENTS}" -j "${BENCHMARK_JOBS}" -t "${BENCHMARK_THREADS}" -s "${BENCHMARK_THREADS}"
+      -e "${BENCHMARK_EVENTS}" -j "${BENCHMARK_JOBS}" -t "${BENCHMARK_THREADS}" -s "${BENCHMARK_THREADS}" \
+      2>&1 | tee -a "${cfgname}"_benchmark.log
   done; unset cfgname;
 else
   printf "\n%s\n\n" ">>> WARNING: throughput estimates not done, path to patatrack-scripts/benchmark is invalid: ${BENCHMARK_EXE}"
