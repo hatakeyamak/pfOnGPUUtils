@@ -144,7 +144,7 @@ edmConfigDump .tmp.py -o hcalOnGPU_pfhbheOnCPU_cfg.py
 ###
 ### GPU-only config (see step3 of wfs .525)
 ###
-${CMSDRIVER_COMMON_CMD} --python_filename .tmp.py --procModifiers gpu
+${CMSDRIVER_COMMON_CMD} --python_filename .tmp.py --procModifiers gpu --customise_commands="process.particleFlowClusterHBHEOnly.cuda.produceLegacy = cms.bool(False)\nprocess.particleFlowRecHitHBHEOnly.cuda.produceLegacy = cms.bool(False)\nprocess.particleFlowRecHitHBHEOnly.cuda.produceCleanedLegacy = cms.bool(False)"
 echo 'process.options.accelerators = ["gpu-nvidia"]' >> .tmp.py
 [ "${USE_DATA}" -ne 1 ] || (echo 'process.load("run357329_cff")' >> .tmp.py)
 cat custom.py >> .tmp.py
